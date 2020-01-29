@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Anasayfa - {{ block.super }}
+{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+  <div class="page-header header-filter">
+    <div class="squares square1"></div>
+    <div class="squares square2"></div>
+    <div class="squares square3"></div>
+    <div class="squares square4"></div>
+    <div class="squares square5"></div>
+    <div class="squares square6"></div>
+    <div class="squares square7"></div>
+    <div class="container">
+      <div class="content-center brand">
+        <h1 class="h1-seo">Topluluğumuza Katıl</h1>
+        <h5 style="font-size:16px;">Novels Tr'ye hoşgeldiniz. Bu site bir gruba bağlı kalmak istemeyen herkesin çevirdikleri
+           novelleri paylaşması için kurulmuştur. Fansub, bireysel veya bir topluluk olarak novellerinizi yayınlayabilirsiniz. Hatta kendi sitenizin reklamını yapabilirsiniz.
+           Ancak çeviri değilde kendi yazdığınız novelleri kabul etmemekteyim. Bu kabalığımı mazur görün.<br>Not: Novelinizi yayınlamak istiyorsanız iletişim kısmından bana ulaşın iyi günler dilerim.
+         </h5>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+<section class="section section-lg section-coins" style="margin-top:0px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <hr class="line-info">
+        <h1 style="margin-bottom:20px;">Yeni
+          <span class="text-info">Novel Bölümleri</span>
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      {% for chapters in chapter %}
+      <div class="typography-line blockquote blockquote-primary" style="width:100%;height:140px;padding:5px;">
+        {% if not chapters.novel.img %}
+        <img src="/media/none2.jpg" alt="Novels Tr" class="img-fluid rounded shadow-lg" style="width: 90px;height:130px;;float:left;">
+        {% endif %}
+        {% if chapters.novel.img %}
+          <img src="{{ chapters.novel.img.url }}" alt="{{ chapters.novel}}"  class="img-fluid rounded shadow-lg" style="width: 90px;height:130px;;float:left;">
+        {% endif %}
+        <blockquote style="margin-left:100px;" >
+            <p class="text-info"><a href="{{chapters.novel.get_absolute_url}}"  style="font-size:16px;">{{ chapters.novel}}</a> | <a class="text-success"href="#">{{ chapters.chapter_number }}.Bölüm - {{ chapters.chapter_name}}</a> | Çevirmen: {{ chapters.cevirmen }} & Redaktör: {{ chapters.redaktor }} | <span class="text-warning" style="font-size:14px;">{{ chapters.created_date|timesince }} önce</span></p>
+            <hr class="line-info" style="margin-top:2px;margin-bottom:2px;">
+            <div class="" style="max-height:60px;overflow-y:hidden;font-size:14px;">
+              {{ chapters.chapter_content|safe|truncatechars:200|linebreaks }}
+            </div>
+
+            <a class="btn btn-success btn-simple btn-sm" href="{{ chapters.get_absolute_url }}">Oku</a>
+        </blockquote>
+      </div>
+      {% endfor %}
+    </div>
+
+      <ul class="pagination">
+        <li class="page-item" style="padding:3px;">
+
+            {% if chapter.has_previous %}
+                <a class="tim-icons icon-double-left" href="?page=1"></a>
+                <a class="tim-icons icon-minimal-left" href="?page={{ chapter.previous_page_number }}"></a>
+            {% endif %}
+
+        </li>
+
+        <li class="page-item active">
+          <a class="page-link" href="#link">{{ chapter.number }}</a>
+        </li>
+
+        <li class="page-item" style="padding:3px;">
+
+            {% if chapter.has_next %}
+                <a class="tim-icons icon-minimal-right" href="?page={{ chapter.next_page_number }}"></a>
+                <a class="tim-icons icon-double-right" href="?page={{ chapter.paginator.num_pages }}"></a>
+            {% endif %}
+
+        </li>
+      </ul>
+    </div>
+  </div>
+
+{% endblock %}

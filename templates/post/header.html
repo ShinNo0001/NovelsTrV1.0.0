@@ -1,0 +1,73 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top navbar-transparent bg-info " color-on-scroll="100">
+  <div class="container">
+    <div class="navbar-translate">
+      <a class="navbar-brand" href="{% url 'home' %}" rel="tooltip" title="" data-placement="bottom" target="">
+        <span>Novels Tr</span> v1.0.0
+      </a>
+      <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-bar bar1"></span>
+        <span class="navbar-toggler-bar bar2"></span>
+        <span class="navbar-toggler-bar bar3"></span>
+        <span class="navbar-toggler-bar bar4"></span>
+        <span class="navbar-toggler-bar bar5"></span>
+      </button>
+    </div>
+
+    <div class="collapse navbar-collapse" id="example-navbar-primary">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'home' %}">
+            <i class="tim-icons icon-bank"></i>Anasayfa
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'novel:novel-list' %}">
+            <i class="tim-icons icon-book-bookmark"></i> Novel List
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'novel:haberler' %}">
+            <i class="tim-icons icon-paper"></i> Haberler
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'iletişim' %}">
+            <i class="tim-icons icon-send"></i> İletişim
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">
+            <i class="tim-icons icon-zoom-split" aria-hidden="true"></i>Novel Ara
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-header text-warning">Arama Yap</a>
+            <form class="navbar-form ml-auto" role="search"style="width:310px;" method="GET" action="">
+                <div class="form-group has-regular nav-item ">
+                    <input class="form-control"  style="width:300px;margin:auto;" type="text" name="q" placeholder="Ad,Tür, Etiket vb. Novel Ara " value="{{ request.GET.q }}" >
+
+                </div>
+                  <button type="submit" style="width:300px;margin-left:5px;" class="btn btn-info btn-round">
+                    <i style="margin:auto;"class="tim-icons icon-compass-05"></i>Ara
+                  </button>
+            </form>
+          </div>
+        </li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">
+            <i class="tim-icons icon-single-02" aria-hidden="true"></i>{{ request.user}}
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-header text-warning">Ayarlar</a>
+            <a class="dropdown-item text-info" href="{% url 'novel:novel-create' %}"">Novel Ekle</a>
+            <a class="dropdown-item text-info" href="{% url 'novel:chapter-create' %}">Bölüm Ekle</a>
+            <a class="dropdown-item text-info" href="{% url 'novel:haber-create' %}">Haber Ekle</a>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- End Navbar -->

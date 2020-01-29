@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+    {% block title %}
+    {{ novels.title }} - {{ block.super }}
+    {% endblock %}
+
+    {% block body %}
+
+    <div class="wrapper" style="margin-top:50px;">
+      <div class="page-header">
+        <div class="container align-items-center">
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <h1 class="profile-title text-left">{{ novels.title }}</h1>
+
+                <!-- Nav tabs -->
+                <div class="card" style="height:580px;">
+                  <div class="card-header">
+                    <ul class="nav nav-tabs nav-tabs-primary" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#link1" role="tablist">
+                          <i class="tim-icons icon-spaceship"></i> Konusu
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#link2" role="tablist">
+                          <i class="tim-icons icon-settings-gear-63"></i> Bölümler
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#link3" role="tablist">
+                          <i class="tim-icons icon-bag-16"></i> Yorumlar
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <!-- Tab panes -->
+                    <div class="tab-content tab-space">
+                      <div class="tab-pane active" id="link1" style="width:100%;height:450px; overflow-x:hidden;">
+                        <p>{{ novels.content|safe|linebreaks }}</p>
+                      </div>
+                      <div class="tab-pane" id="link2">
+                        {% if not chapter %}
+                          <div class="" style="width:100%;">
+                            <div class="caption thumbnail" style="width:100%;background-color:#984545">
+                                <h5><strong style="color:white;"><center style="padding-top: 3px;padding-bottom: 3px;">
+                                  Bu Novele ait bölüm bulunmamaktadır</center></strong></h5>
+                            </div>
+                          </div>
+                        {% endif %}
+
+                        <div class="" style="width:100%;height:450px; overflow-x:hidden;">
+                        {% for chapter in chapter %}
+                            <div class="" style="width:100%; margin:5px;">
+                                <h5 style="color:#afabab;"><strong><a href="{{chapter.get_absolute_url}}">{{ chapter.chapter_number }}.Bölüm </a>|</strong> {{ chapter.chapter_name|truncatechars:25 }}   <small style="margin-left: 3px;">{{ chapter.created_date|timesince }} önce</small></h5>
+                            </div>
+                        {% endfor %}
+
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="link3" style="width:100%;height:450px; overflow-x:hidden;">
+                          <hr class="line-primary">
+                        {% for comments in novels.novelcomment.all %}
+                          <div class="caption thumbnail" style="">
+                            <h5 style="color:#afabab; font-size:16px;"><strong>{{ comments.nc_name }} | </strong><small>{{ comments.nc_created_date }}</small></h5>
+                            <p style="color:#afabab;font-size:16px;">{{ comments.nc_content|linebreaks }}</p>
+                            {% if request.user.is_authenticated %}
+                              <a href="{{ comments.get_delete_url }}" class="btn btn-primary" role="button" data-toggle="">Sil</a>
+                            {% endif %}
+                          </div>
+                          <hr class="line-primary">
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+            </div>
+            <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+              <div class="card card-coin card-plain">
+                <div class="card-header" style="margin-top:5px;">
+                  {% if novels.img %}
+                      <img src="{{ novels.img.url }}" class="img-center img-fluid rounded shadow" alt="{{ novel.title }}">
+                  {% endif %}
+                  <h4 class="title"> {{ novels.auth }}</h4>
+                </div>
+                <div class="card-body">
+                  <ul class="nav nav-tabs nav-tabs-primary justify-content-center">
+                    <li class="nav-item">
+                      <a class="nav-link active" data-toggle="tab" href="#linka">
+                        Genel Bilgiler
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#linkb">
+                        Diğer Adlar
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#linkc">
+                        Novel Türü
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#linkd">
+                        Novel Etiketi
+                      </a>
+                    </li>
+                  </ul>
+                  <div class="tab-content tab-subcategories">
+                    <div class="tab-pane active" id="linka">
+                      <div class="table-responsive" style="width:100%;height:100px; overflow-x:hidden;">
+                        <div class="" style="width:100%;height:100px;">
+                        <table class="table tablesorter " id="plain-table">
+                          <thead class=" text-primary">
+
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                Uploader: {{ novels.user }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                Novel Tipi: {{ novels.type }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                Çıkış Yılı: {{ novels.year }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                Orjinal Dil:{{ novels.league }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="linkb">
+                      <div class="row" style="width:100%;height:100px; overflow-x:hidden;">
+
+                        <p>{{ novels.name}}</p>
+
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="linkc">
+                      <div class="row" style="width:100%;height:100px; overflow-x:hidden;">
+
+                        <p>{{ novels.genre }}</p>
+
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="linkd">
+                      <div class="row" style="width:100%;height:100px; overflow-x:hidden;">
+
+                        <p>{{ novels.tags }}</p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<div class="container"  style="width:100%; margin:50px;">
+  <div class="row">
+        <div class="" style="width:100%; margin:10px;">
+            <div class="Form-group" style="width:90%; margin:auto;">
+              <div class="icon icon-primary">
+                <i class="tim-icons icon-email-85"></i>
+              </div>
+              <h4 class="info-title">Yorum Yap</h4>
+              <hr class="line-primary">
+                {% include 'post/comments.html' %}
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+    {% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Haberler - {{ block.super }}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row">
+    <h4 style="color:#afabab;"><strong>Haber Güncellemeleri</strong></h4>
+    <hr class="line-info" style="width:100%">
+    {% for haberlers in haber %}
+    <div class="col-md-10 ml-auto col-xl-6 mr-auto" >
+      <div class="card">
+        <div class="card-body">
+          {% if haberlers.h_img %}
+          <div style="float:left; width:90px; margin-right:10px;">
+
+                <img src="{{ haberlers.h_img.url }}" alt="{{ haberlers.h_title}}"class="img-fluid rounded shadow-lg" style="width: 90px;height:130px;;float:left;" />
+
+          </div>
+          {% endif %}
+          <div class="" style="">
+            <p><a href="{{ haberlers.get_absolute_url }}" class="text-warning" style="font-size:16px;">{{ haberlers.h_title}}</a> |{{ haberlers.h_created_date|timesince }} önce önce</p>
+            <p><strong>Yazar: {{ haberlers.h_user }}</strong></p>
+            <p>{{ haberlers.h_content|safe|linebreaks|truncatechars:240}}</p>
+            <a href="{{ haberlers.get_absolute_url }}"class="btn btn-info btn-round btn-sm" style="width:90px;margin-top:5px;" ><i style="" class="tim-icons icon-gift-2"></i>Oku</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <ul class="pagination">
+    <li class="page-item" style="padding:3px;">
+
+        {% if haber.has_previous %}
+            <a class="tim-icons icon-double-left" href="?page=1"></a>
+            <a class="tim-icons icon-minimal-left" href="?page={{ haber.previous_page_number }}"></a>
+        {% endif %}
+
+    </li>
+
+    <li class="page-item active">
+      <a class="page-link" href="#link">{{ haber.number }}</a>
+    </li>
+
+    <li class="page-item" style="padding:3px;">
+
+        {% if haber.has_next %}
+            <a class="tim-icons icon-minimal-right" href="?page={{ haber.next_page_number }}"></a>
+            <a class="tim-icons icon-double-right" href="?page={{ haber.paginator.num_pages }}"></a>
+        {% endif %}
+
+    </li>
+  </ul>
+</div>
+
+{% endblock %}

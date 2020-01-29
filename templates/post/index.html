@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Novel List - {{ block.super }}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row">
+    <h4 style="color:#afabab;"><strong>Novel Listesi</strong></h4>
+    <hr class="line-info" style="width:100%">
+    {% for novels in novels %}
+    <div class="col-md-10 ml-auto col-xl-6 mr-auto" >
+      <div class="card">
+        <div class="card-body">
+          <div style="float:left; width:90px;">
+            {% if novels.img %}
+                <img src="{{ novels.img.url }}" alt="{{novels.title}}"class="img-fluid rounded shadow-lg" style="width: 90px;height:130px;;float:left;" />
+            {% endif %}
+            {% if not novels.img %}
+              <img src="/media/none2.jpg" alt="Novels Tr" class="img-fluid rounded shadow-lg" style="width: 90px;height:130px;"/>
+            {% endif %}
+            <a href="{{ novels.get_absolute_url }}"class="btn btn-info btn-round btn-sm" style="width:90px;margin-top:5px;" ><i style="" class="tim-icons icon-gift-2"></i>Oku</a>
+          </div>
+
+          <div class="" style="margin-left:100px;">
+            <p><a href="{{ novels.get_absolute_url }}" class="text-warning" style="font-size:16px;">{{ novels.title }}</a> | {{ novels.publishing_date|timesince }} önce</p>
+            <p><strong>Uploader: {{ novels.user }}</strong></p>
+            <p>{{ novels.content|safe|linebreaks|truncatechars:240}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <ul class="pagination">
+    <li class="page-item" style="padding:3px;">
+
+        {% if novels.has_previous %}
+            <a class="tim-icons icon-double-left" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"></a>
+            <a class="tim-icons icon-minimal-left" href="?page={{ novels.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"></a>
+        {% endif %}
+
+    </li>
+
+    <li class="page-item active">
+      <a class="page-link" href="#link">{{ novels.number }}</a>
+    </li>
+
+    <li class="page-item" style="padding:3px;">
+
+        {% if novels.has_next %}
+            <a class="tim-icons icon-minimal-right" href="?page={{ novels.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"></a>
+            <a class="tim-icons icon-double-right" href="?page={{ novels.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"></a>
+        {% endif %}
+
+    </li>
+  </ul>
+</div>
+{% endblock %}

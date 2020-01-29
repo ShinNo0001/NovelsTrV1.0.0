@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+    {% block title %}
+    {{ haber.h_title }} - {{ block.super }}
+    {% endblock %}
+
+    {% block body %}
+
+<div class="container">
+  <div class="row">
+      <div class="" style="">
+        {% if haber.h_img %}
+            <img style="border-radius:10px;width:1170px;height:300px; margin:10px;"src="{{ haber.h_img.url }}" class="img-responsave " alt="{{ haber.h_title }}">
+        {% endif %}
+      </div>
+
+        <div class="" style="margin:10px;height:50px;width:950px;">
+            <div class="" style="">
+             <h3><a style="color:#afabab;" href="{{ haber.get_absolute_url }}">{{ haber.h_title }}</a> <small>{{ haber.h_created_date|timesince }} önce</small></h3>
+         </div>
+
+        </div>
+
+      <div class=""style="color:#afabab;margin:10px">
+        <p>{{ haber.h_content|safe|linebreaks }}</p>
+      </div>
+
+      <div class="row row-grid justify-content-center" style="width:880px;margin:auto;">
+        <div class="" style="width:880px;float:left;max-height:400px;margin-top:20px;">
+          <div class="info" style="padding-top:10px;max-width:880px;">
+            <div class="icon icon-primary">
+              <i class="tim-icons icon-email-85"></i>
+            </div>
+            <h4 class="info-title">Yorum Yap</h4>
+            <hr class="line-primary">
+            {% include 'post/comments.html' %}
+          </div>
+        </div>
+      </div>
+
+      <div class="row row-grid justify-content-center" style="width:880px;margin:auto;">
+            <div class="" style="width:880px;float:left;">
+              <div class="info" style="padding-top:10px;max-width:880px;">
+                <div class="icon icon-warning">
+                  <i class="tim-icons icon-chat-33"></i>
+                </div>
+                <h4 class="info-title">Tüm Yorumlar</h4>
+                <hr class="line-warning" style="width:100%;">
+                {% for comments in haber.haberlercomment.all %}
+                  <div class="caption thumbnail" style="">
+                    <h5 style="color:#afabab; font-size:16px;"><strong>{{ comments.hc_name }} |</strong><small>{{ comments.hc_created_date }}</small></h5>
+                    <p style="color:#afabab;font-size:16px;">{{ comments.hc_content|linebreaks }}</p>
+                    {% if request.user.is_authenticated %}
+                      <a href="{{ comments.get_delete_url }}" class="btn btn-success" role="button" data-toggle="">Sil</a>
+                    {% endif %}
+                  </div>
+                  <hr class="line-warning" style="width:100%;">
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+
+    </div>
+  </div>
+{% endblock %}
